@@ -1,6 +1,6 @@
 import { Bookmark, Heart, Archive, Tag, Plus, Settings, LogOut, ChevronLeft } from 'lucide-react';
 import { NavSection } from '@src/types/article';
-import { cn } from '@src/lib/utils';
+import { cn } from '@src/commons/utils';
 import logo from '@src/assets/logo.png';
 
 interface SidebarProps {

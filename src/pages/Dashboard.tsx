@@ -9,7 +9,7 @@ import LoadingSkeleton from '@src/components/dashboard/LoadingSkeleton';
 import TagsPage from '@src/components/dashboard/TagsPage';
 import { useTheme } from '@src/hooks/useTheme';
 import { useIsMobile } from '@src/hooks/use-mobile';
-import { cn } from '@src/lib/utils';
+import { cn } from '@src/commons/utils';
 import { X } from 'lucide-react';
 import AddArticleModal from '@src/components/dashboard/AddArticleModal';
 

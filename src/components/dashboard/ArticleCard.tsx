@@ -1,8 +1,8 @@
 import { Heart, Archive, Trash2, Tag, Image, Video, Clock, BookOpen } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Article } from '@src/types/article';
-import { formatRelativeTime, estimateReadTime } from '@src/lib/formatters';
-import { cn } from '@src/lib/utils';
+import { formatRelativeTime, estimateReadTime } from '@src/commons/formatters';
+import { cn } from '@src/commons/utils';
 import { useState } from 'react';
 
 interface ArticleCardProps {

@@ -1,14 +1,16 @@
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import logo from "@src/assets/logo.png";
-import { Eye, EyeOff, Loader2, Mail, Lock, User } from "lucide-react";
-import { toast } from "sonner";
-import axios from "axios";
-import PasswordStrengthIndicator from "@src/components/auth/PasswordStrengthIndicator";
-
-const REGISTER_API_URL = import.meta.env.VITE_BACKEND_URL + "/api/v1/register";
+import { useState }                 from "react";
+import { useNavigate, Link }        from "react-router-dom";
+import logo                         from "@src/assets/logo.png";
+import { Eye, EyeOff, Loader2, Mail, Lock, User } 
+                                    from "lucide-react";
+import { toast }                    from "sonner";
+import registerManager              from "@src/api/registerManager";
+import { isValidEmail }             from "@src/commons/utils";
+import PasswordStrengthIndicator    from "@src/components/auth/PasswordStrengthIndicator";
 
 const Register = () => {
+    /* "/register page" */
+
     const navigate = useNavigate();
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -19,46 +21,46 @@ const Register = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [errors, setErrors] = useState<Record<string, string>>({});
 
+    /* validate form submissions */
     const validate = () => {
         const e: Record<string, string> = {};
-        if (!name.trim()) e.name = "Name is required";
-        if (!email.trim()) e.email = "Email is required";
-        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) e.email = "Enter a valid email";
-        if (!password) e.password = "Password is required";
-        else if (password.length < 8) e.password = "Password must be at least 8 characters";
-        if (!confirmPassword) e.confirmPassword = "Please confirm your password";
+        
+        // name is not present
+        if (!name.trim()) 
+            e.name = "Name is required";
+        // email not provided
+        if (!email.trim()) 
+            e.email = "Email is required";
+        // email is not valid
+        else if (!isValidEmail(email)) 
+            e.email = "Enter a valid email";
+
+        // password not provided
+        if (!password) 
+            e.password = "Password is required";
+        // password is too short
+        else if (password.length < 8) 
+            e.password = "Password must be at least 8 characters";
+        // confirm password not provided
+        if (!confirmPassword.length) 
+            e.confirmPassword = "Please confirm your password";
+        // password and confirmPassword do not match
         else if (password !== confirmPassword) e.confirmPassword = "Passwords do not match";
+        
+        // set errors
         setErrors(e);
+
+        // weather validation was successfull
         return Object.keys(e).length === 0;
     };
 
-    const tryRegister = async (name: string, email: string, password: string) => {
-        const resTryRegister = await axios.post(REGISTER_API_URL, {
-            name, email, password
-        });
-
-        return resTryRegister;
-    };
-
+    /* Handle form submission */
     const handleSubmit = async (ev: React.FormEvent) => {
         ev.preventDefault();
         if (!validate()) return;
         setIsLoading(true);
-
-        try {
-            const resTryRegister = await tryRegister(name, email, password);
-
-            if (resTryRegister.status === 201) {
-                toast.success("Account created successfully");
-                navigate("/");
-            } else {
-                setErrors({ general: "An account with this email already exists." });
-            }
-        } catch {
-            setErrors({ general: "Network error. Please try again." });
-        } finally {
-            setIsLoading(false);
-        }
+        // here we nee to try to register
+        setIsLoading(false);
     };
 
     const isFormValid = name.trim() && email.trim() && password.length >= 8 && confirmPassword === password;

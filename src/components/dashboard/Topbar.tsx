@@ -1,6 +1,6 @@
 import { Search, SlidersHorizontal, ArrowUpDown, Sun, Moon, Menu } from 'lucide-react';
 import { FilterStatus, SortOption } from '@src/types/article';
-import { cn } from '@src/lib/utils';
+import { cn } from '@src/commons/utils';
 import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 

@@ -1,4 +1,4 @@
-import { cn } from '@src/lib/utils';
+import { cn } from '@src/commons/utils';
 
 export default function LoadingSkeleton({ count = 5 }: { count?: number }) {
     return (

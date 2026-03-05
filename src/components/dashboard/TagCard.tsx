@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { Tag } from 'lucide-react';
-import { cn } from '@src/lib/utils';
+import { cn } from '@src/commons/utils';
 
 interface TagCardProps {
     tagName: string;

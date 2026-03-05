@@ -11,7 +11,7 @@ import LoadingSkeleton from '@src/components/dashboard/LoadingSkeleton';
 import TagDetailHeader from '@src/components/dashboard/TagDetailHeader';
 import { useTheme } from '@src/hooks/useTheme';
 import { useIsMobile } from '@src/hooks/use-mobile';
-import { cn } from '@src/lib/utils';
+import { cn } from '@src/commons/utils';
 import { X } from 'lucide-react';
 
 export default function TagDetail() {

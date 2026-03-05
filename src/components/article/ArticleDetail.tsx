@@ -1,7 +1,7 @@
 import { Heart, Archive, Trash2, ExternalLink, Tag, Clock, BookOpen, ArrowLeft, Image, Video, ChevronRight, StickyNote, Highlighter, BookMarked } from 'lucide-react';
 import { Article } from '@src/types/article';
-import { formatRelativeTime, estimateReadTime, formatWordCount } from '@src/lib/formatters';
-import { cn } from '@src/lib/utils';
+import { formatRelativeTime, estimateReadTime, formatWordCount } from '@src/commons/formatters';
+import { cn } from '@src/commons/utils';
 import { useNavigate } from 'react-router-dom';
 
 interface ArticleDetailProps {
