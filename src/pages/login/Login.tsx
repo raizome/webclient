@@ -20,7 +20,6 @@ async function tryLogin(email: string, password: string, rememberMe: boolean = f
     return resTryLogin;
 }
 
-
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -57,18 +56,23 @@ const Login = () => {
 
     return (
         <div className="min-h-screen flex">
-            {/* Left panel - branding */}
-            <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden items-center justify-center" style={{ background: 'linear-gradient(160deg, hsl(220 25% 14%) 0%, hsl(220 30% 22%) 50%, hsl(200 35% 28%) 100%)' }}>
+            {/* Left panel */}
+            <div
+                className="hidden lg:flex lg:w-1/2 relative overflow-hidden items-center justify-center
+                            bg-gradient-to-b from-slate-800 via-slate-800 to-slate-800"
+            >
                 <div className="absolute inset-0 opacity-[0.07]">
                     <div className="absolute top-20 left-20 w-72 h-72 rounded-full bg-white blur-3xl" />
                     <div className="absolute bottom-20 right-20 w-96 h-96 rounded-full bg-white blur-3xl" />
                 </div>
+
+                {/* Logo and tagline */}
                 <div className="relative z-10 text-center px-12 max-w-lg">
                     <img src={logo} alt="Open Pocket" className="w-24 h-24 mx-auto mb-8 drop-shadow-2xl" />
                     <h1 className="font-display text-4xl font-bold text-primary-foreground mb-4">Open Pocket</h1>
                     <p className="text-primary-foreground/80 text-lg leading-relaxed">
-                        Save articles, videos, and stories from any publication, page, or app.
-                        Your personal reading list, open and free.
+                        Save URLs anywhere. Access URLs anywhere. 
+                        Your personal reading  list, open and free.
                     </p>
                 </div>
             </div>

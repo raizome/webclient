@@ -64,8 +64,11 @@ const Register = () => {
         
         setIsLoading(true);
 
-        if (!validate()) return;
-        
+        if (!validate()) {
+            setIsLoading(false);
+            return;
+        }
+
         try {
             const resRegisterManager = await registerManager({
                 name, email, password
@@ -268,7 +271,6 @@ const Register = () => {
         </div>
     );
 };
-
 
 /* OAuth placeholder buttons */
 const OAuthPlaceholder = ({ icon, label }: { icon: React.ReactNode; label: string }) => (
