@@ -3,7 +3,7 @@ import TagDetail                    from "@src/pages/TagDetail";
 import Login                        from "@src/pages/Login";
 import ArticlePage                  from "@src/pages/ArticlePage";
 import NotFound                     from "@src/pages/NotFound";
-import Register                     from "@src/pages/Register";
+import Register                     from "@src/pages/register/Register";
 import { Toaster as Sonner }        from "@src/components/ui/sonner";
 import { TooltipProvider }          from "@src/components/ui/tooltip";
 import { QueryClient, QueryClientProvider }
