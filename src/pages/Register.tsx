@@ -100,7 +100,7 @@ const Register = () => {
             {/* Left panel */}
             <div
                 className="hidden lg:flex lg:w-1/2 relative overflow-hidden items-center justify-center
-                            bg-gradient-to-b from-zinc-900 via-zinc-900 to-zinc-900"
+                            bg-gradient-to-b from-slate-800 via-slate-800 to-slate-800"
             >
                 <div className="absolute inset-0 opacity-[0.07]">
                     <div className="absolute top-20 left-20 w-72 h-72 rounded-full bg-white blur-3xl" />
