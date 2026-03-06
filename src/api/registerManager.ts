@@ -1,6 +1,5 @@
-import client from "@src/api/client";
-
-const REGISTER_ENDPOINT_URL = "/api/v1/register";
+import client               from "@src/api/client";
+import BACKEND_ENDPOINTS    from "@src/commons/endpoints";
 
 interface IUser {
     name: string;
@@ -10,7 +9,7 @@ interface IUser {
 
 const registerManager = async (user: IUser) => {
     // TODO: wrap in QueryClient and handle errors
-    const resRegisterManager = await client.post(REGISTER_ENDPOINT_URL, user);
+    const resRegisterManager = await client.post(BACKEND_ENDPOINTS.register, user);
     return resRegisterManager;
 };
 

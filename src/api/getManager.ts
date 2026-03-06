@@ -6,9 +6,8 @@
  * be authenticated with session cookie. So if you have a valid session cookie, you can
  * just keep the access token blank. But it is still recommended to provide the access token
  */
-import client from "@src/api/client";
-
-const GET_ENDPOINT_URL = "/api/v1/get";
+import client            from "@src/api/client";
+import BACKEND_ENDPOINTS from "@src/commons/endpoints";
 
 interface IGetParams {
     consumer_key: string;
@@ -28,7 +27,7 @@ interface IGetParams {
 }
 
 const getManager = async (request: IGetParams) => {
-    const resGetManager = await client.post(GET_ENDPOINT_URL, request);
+    const resGetManager = await client.post(BACKEND_ENDPOINTS.get, request);
     return resGetManager;
 };
 
