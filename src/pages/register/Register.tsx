@@ -191,7 +191,8 @@ const Register = () => {
                                 type="email"
                                 value={email}
                                 onChange={(e) => { setEmail(e.target.value); setErrors((p) => ({ ...p, email: "" })); }}
-                                placeholder="username@mail.com"
+                                placeholder="username@example.com"
+                                autoComplete="email"
                                 aria-invalid={!!errors.email}
                                 className="w-full h-11 pl-10 pr-4 rounded-lg border border-input bg-card text-foreground 
                                             placeholder:text-muted-foreground focus:outline-none focus:ring-2 
