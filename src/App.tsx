@@ -1,4 +1,4 @@
-import Home                    from "@src/pages/home/Home";
+import Home                         from "@src/pages/home/Home";
 import TagDetail                    from "@src/pages/TagDetail";
 import Login                        from "@src/pages/login/Login";
 import ArticlePage                  from "@src/pages/ArticlePage";

@@ -6,10 +6,11 @@ import { Eye, EyeOff, Loader2, Mail, Lock, User }
 import { toast }                    from "sonner";
 import { GoogleIcon, GitHubIcon }   from "@src/pages/register/components/IconsOAuth";
 import PasswordStrengthIndicator    from "@src/pages/register/components/PasswordStrengthIndicator";
-import RegisterFormField            from "@src/pages/register/components/RegisterFormField";
+import { RegisterFormField }        from "@src/pages/register/components/RegisterFormField";
 import registerManager              from "@src/api/registerManager";
 import { isValidEmail }             from "@src/commons/utils";
 import { StatusCodes }              from "http-status-codes";
+import { OAuthPlaceholder }         from "@src/pages/register/components/OAuthPlaceholder";
 
 const Register = () => {
     /* "/register page" */
@@ -74,7 +75,8 @@ const Register = () => {
                 name, email, password
             });
             toast.success("Account created successfully");
-            navigate("/");
+            // make the user login after registration
+            navigate("/login");
         } 
         catch (err) {
             // axios throws an error when the returned status is no 2XX
@@ -82,6 +84,7 @@ const Register = () => {
             if (err.response?.status === StatusCodes.CONFLICT) {
                 toast.error("An account with this email already exists.")
                 setErrors({"general": "An account with this email already exists."});
+                // ask the user to login, since account already exists
                 navigate("/login");
             }
             else {
@@ -271,15 +274,5 @@ const Register = () => {
         </div>
     );
 };
-
-/* OAuth placeholder buttons */
-const OAuthPlaceholder = ({ icon, label }: { icon: React.ReactNode; label: string }) => (
-    <button type="button" disabled 
-            className="flex items-center justify-center gap-2 h-11 rounded-lg border border-input 
-                        bg-card text-muted-foreground text-sm font-medium opacity-60 cursor-not-allowed" 
-            aria-label={`Sign up with ${label} (coming soon)`}>
-        {icon}<span>{label}</span><span className="text-[10px] opacity-70">Soon</span>
-    </button>
-);
 
 export default Register;

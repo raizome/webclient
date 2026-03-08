@@ -15,7 +15,7 @@ const getStrength = (password: string): { score: number; label: string; color: s
   return { score: 5, label: "Very strong", color: "bg-emerald-400" };
 };
 
-const PasswordStrengthIndicator = ({ password }: { password: string }) => {
+export const PasswordStrengthIndicator = ({ password }: { password: string }) => {
   const strength = useMemo(() => getStrength(password), [password]);
 
   if (!password) return null;

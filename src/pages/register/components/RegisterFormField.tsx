@@ -5,7 +5,7 @@ interface IRegisterFormFieldProps {
     children: React.ReactNode
 }
 
-const RegisterFormField = ({ label, error, id, children }: IRegisterFormFieldProps) => (
+export const RegisterFormField = ({ label, error, id, children }: IRegisterFormFieldProps) => (
     <div>
         <label htmlFor={id} className="block text-sm font-medium text-foreground mb-1.5">{label}</label>
         

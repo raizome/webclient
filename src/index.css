@@ -98,7 +98,6 @@
 
 
 /* Hide browsers built in password toggle */
-/* Hide browser's built-in password toggle */
 input::-ms-reveal,
 input::-ms-clear {
     display: none;
