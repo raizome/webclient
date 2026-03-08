@@ -29,7 +29,7 @@ export default function TagCard({ tagName, count, index }: TagCardProps) {
 
     return (
         <button
-            onClick={() => navigate(`/dashboard/tags/${encodeURIComponent(tagName)}`)}
+            onClick={() => navigate(`/home/tags/${encodeURIComponent(tagName)}`)}
             className={cn(
                 'group relative w-full text-left rounded-2xl p-6 overflow-hidden',
                 'transition-all duration-200 ease-out',

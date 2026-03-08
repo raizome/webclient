@@ -19,7 +19,7 @@ const navItems: { id: NavSection; label: string; icon: typeof Bookmark }[] = [
     { id: 'tags', label: 'Tags', icon: Tag },
 ];
 
-export default function DashboardSidebar({
+export default function HomeSidebar({
     activeSection, onSectionChange, collapsed, onCollapse, onAddArticle, articleCounts,
 }: SidebarProps) {
     const getCount = (id: NavSection) => {

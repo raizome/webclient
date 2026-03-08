@@ -1,20 +1,20 @@
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import { Article, FilterStatus, SortOption, NavSection } from '@src/types/article';
 import { mockArticles } from '@src/data/mockArticles';
-import DashboardSidebar from '@src/components/dashboard/DashboardSidebar';
-import Topbar from '@src/components/dashboard/Topbar';
-import ArticleList from '@src/components/dashboard/ArticleList';
-import EmptyState from '@src/components/dashboard/EmptyState';
-import LoadingSkeleton from '@src/components/dashboard/LoadingSkeleton';
-import TagsPage from '@src/components/dashboard/TagsPage';
+import HomeSidebar from '@src/components/home/HomeSidebar';
+import Topbar from '@src/components/home/Topbar';
+import ArticleList from '@src/components/home/ArticleList';
+import EmptyState from '@src/components/home/EmptyState';
+import LoadingSkeleton from '@src/components/home/LoadingSkeleton';
+import TagsPage from '@src/components/home/TagsPage';
 import { useTheme } from '@src/hooks/useTheme';
 import { useIsMobile } from '@src/hooks/use-mobile';
 import { cn } from '@src/commons/utils';
 import { X } from 'lucide-react';
-import AddArticleModal from '@src/components/dashboard/AddArticleModal';
+import AddArticleModal from '@src/components/home/AddArticleModal';
 
 
-export default function Dashboard() {
+export default function Home() {
     const [articles, setArticles] = useState<Article[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
@@ -110,7 +110,7 @@ export default function Dashboard() {
         <div className="min-h-screen flex bg-background">
             {/* Desktop Sidebar */}
             <div className="hidden lg:block">
-                <DashboardSidebar
+                <HomeSidebar
                     activeSection={activeSection}
                     onSectionChange={setActiveSection}
                     collapsed={sidebarCollapsed}
@@ -125,7 +125,7 @@ export default function Dashboard() {
                 <div className="fixed inset-0 z-40 lg:hidden">
                     <div className="absolute inset-0 bg-foreground/20 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)} />
                     <div className="relative z-50 h-full w-64 animate-in slide-in-from-left duration-300">
-                        <DashboardSidebar
+                        <HomeSidebar
                             activeSection={activeSection}
                             onSectionChange={s => { setActiveSection(s); setMobileMenuOpen(false); }}
                             collapsed={false}

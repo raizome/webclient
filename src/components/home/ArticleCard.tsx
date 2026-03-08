@@ -22,7 +22,7 @@ export default function ArticleCard({ article, onToggleFavorite, onToggleArchive
         <article
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
-            onClick={() => navigate(`/dashboard/article/${article.item_id}`)}
+            onClick={() => navigate(`/home/article/${article.item_id}`)}
             className="group relative flex gap-4 p-4 md:p-5 rounded-2xl bg-card border border-border/60 hover:border-border hover:shadow-md transition-all duration-200 cursor-pointer"
             role="button"
             tabIndex={0}

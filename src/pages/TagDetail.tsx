@@ -3,12 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { Article, FilterStatus, SortOption } from '@src/types/article';
 import { mockArticles } from '@src/data/mockArticles';
-import DashboardSidebar from '@src/components/dashboard/DashboardSidebar';
-import Topbar from '@src/components/dashboard/Topbar';
-import ArticleList from '@src/components/dashboard/ArticleList';
-import EmptyState from '@src/components/dashboard/EmptyState';
-import LoadingSkeleton from '@src/components/dashboard/LoadingSkeleton';
-import TagDetailHeader from '@src/components/dashboard/TagDetailHeader';
+import HomeSidebar from '@src/components/home/HomeSidebar';
+import Topbar from '@src/components/home/Topbar';
+import ArticleList from '@src/components/home/ArticleList';
+import EmptyState from '@src/components/home/EmptyState';
+import LoadingSkeleton from '@src/components/home/LoadingSkeleton';
+import TagDetailHeader from '@src/components/home/TagDetailHeader';
 import { useTheme } from '@src/hooks/useTheme';
 import { useIsMobile } from '@src/hooks/use-mobile';
 import { cn } from '@src/commons/utils';
@@ -92,9 +92,9 @@ export default function TagDetail() {
     return (
         <div className="min-h-screen flex bg-background">
             <div className="hidden lg:block">
-                <DashboardSidebar
+                <HomeSidebar
                     activeSection="tags"
-                    onSectionChange={() => navigate('/dashboard')}
+                    onSectionChange={() => navigate('/home')}
                     collapsed={sidebarCollapsed}
                     onCollapse={setSidebarCollapsed}
                     onAddArticle={() => { }}
@@ -106,9 +106,9 @@ export default function TagDetail() {
                 <div className="fixed inset-0 z-40 lg:hidden">
                     <div className="absolute inset-0 bg-foreground/20 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)} />
                     <div className="relative z-50 h-full w-64 animate-in slide-in-from-left duration-300">
-                        <DashboardSidebar
+                        <HomeSidebar
                             activeSection="tags"
-                            onSectionChange={() => { setMobileMenuOpen(false); navigate('/dashboard'); }}
+                            onSectionChange={() => { setMobileMenuOpen(false); navigate('/home'); }}
                             collapsed={false}
                             onCollapse={() => { }}
                             onAddArticle={() => setMobileMenuOpen(false)}

@@ -152,7 +152,7 @@ export default function ArticleDetail({ article, onToggleFavorite, onToggleArchi
                         {article.tags.map(tag => (
                             <button
                                 key={tag}
-                                onClick={() => navigate(`/dashboard/tags/${encodeURIComponent(tag)}`)}
+                                onClick={() => navigate(`/home/tags/${encodeURIComponent(tag)}`)}
                                 className="group relative px-3.5 py-1.5 rounded-full text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md active:scale-95"
                                 style={{ background: getTagGradient(tag) }}
                             >

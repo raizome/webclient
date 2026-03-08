@@ -1,4 +1,4 @@
-import Dashboard                    from "@src/pages/Dashboard/Dashboard";
+import Home                    from "@src/pages/home/Home";
 import TagDetail                    from "@src/pages/TagDetail";
 import Login                        from "@src/pages/login/Login";
 import ArticlePage                  from "@src/pages/ArticlePage";
@@ -20,18 +20,18 @@ const App = () => (
 
             <BrowserRouter future={{ v7_startTransition: true }}>
                 <Routes>
-                    {/* loads at Dashboard by default */}
-                    <Route path="/" element={<Dashboard />} />
+                    {/* loads at Home by default */}
+                    <Route path="/" element={<Home />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
-                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/home" element={<Home />} />
 
                     <Route
-                        path="/dashboard/tags/:tagName"
+                        path="/home/tags/:tagName"
                         element={<TagDetail />}
                     />
                     <Route
-                        path="/dashboard/article/:itemId"
+                        path="/home/article/:itemId"
                         element={<ArticlePage />}
                     />
 

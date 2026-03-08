@@ -12,7 +12,7 @@ export default function TagDetailHeader({ tagName, articleCount }: TagDetailHead
     return (
         <div className="mb-6">
             <button
-                onClick={() => navigate('/dashboard', { state: { section: 'tags' } })}
+                onClick={() => navigate('/home', { state: { section: 'tags' } })}
                 className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-3"
             >
                 <ArrowLeft className="w-4 h-4" />

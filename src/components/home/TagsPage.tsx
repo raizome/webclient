@@ -1,7 +1,7 @@
 import { useMemo, useState, useEffect } from 'react';
 import { Article } from '@src/types/article';
 import { Tag, Plus } from 'lucide-react';
-import TagCard from '@src/components/dashboard/TagCard';
+import TagCard from '@src/components/home/TagCard';
 import { Skeleton } from '@src/components/ui/skeleton';
 
 interface TagsPageProps {

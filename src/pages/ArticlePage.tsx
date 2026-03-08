@@ -2,8 +2,8 @@ import { useState, useMemo, useCallback, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Article } from '@src/types/article';
 import { mockArticles } from '@src/data/mockArticles';
-import DashboardSidebar from '@src/components/dashboard/DashboardSidebar';
-import Topbar from '@src/components/dashboard/Topbar';
+import HomeSidebar from '@src/components/home/HomeSidebar';
+import Topbar from '@src/components/home/Topbar';
 import { useTheme } from '@src/hooks/useTheme';
 import { useIsMobile } from '@src/hooks/use-mobile';
 import { X } from 'lucide-react';
@@ -56,7 +56,7 @@ export default function ArticlePage() {
 
     const deleteArticle = useCallback(() => {
         setArticle(prev => prev ? { ...prev, status: 2 as const } : prev);
-        setTimeout(() => navigate('/dashboard'), 500);
+        setTimeout(() => navigate('/home'), 500);
     }, [navigate]);
 
     const articleCounts = useMemo(() => ({
@@ -69,9 +69,9 @@ export default function ArticlePage() {
         <div className="min-h-screen flex bg-background">
             {/* Desktop Sidebar */}
             <div className="hidden lg:block">
-                <DashboardSidebar
+                <HomeSidebar
                     activeSection={activeSection}
-                    onSectionChange={s => { setActiveSection(s); navigate('/dashboard'); }}
+                    onSectionChange={s => { setActiveSection(s); navigate('/home'); }}
                     collapsed={sidebarCollapsed}
                     onCollapse={setSidebarCollapsed}
                     onAddArticle={() => { }}
@@ -84,9 +84,9 @@ export default function ArticlePage() {
                 <div className="fixed inset-0 z-40 lg:hidden">
                     <div className="absolute inset-0 bg-foreground/20 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)} />
                     <div className="relative z-50 h-full w-64 animate-in slide-in-from-left duration-300">
-                        <DashboardSidebar
+                        <HomeSidebar
                             activeSection={activeSection}
-                            onSectionChange={s => { setActiveSection(s); setMobileMenuOpen(false); navigate('/dashboard'); }}
+                            onSectionChange={s => { setActiveSection(s); setMobileMenuOpen(false); navigate('/home'); }}
                             collapsed={false}
                             onCollapse={() => { }}
                             onAddArticle={() => setMobileMenuOpen(false)}
@@ -131,10 +131,10 @@ export default function ArticlePage() {
                                     The article you're looking for doesn't exist or has been removed.
                                 </p>
                                 <button
-                                    onClick={() => navigate('/dashboard')}
+                                    onClick={() => navigate('/home')}
                                     className="px-4 py-2 rounded-xl bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity"
                                 >
-                                    Back to Dashboard
+                                    Back to Home
                                 </button>
                             </div>
                         ) : (
@@ -143,7 +143,7 @@ export default function ArticlePage() {
                                 onToggleFavorite={toggleFavorite}
                                 onToggleArchive={toggleArchive}
                                 onDelete={deleteArticle}
-                                onBack={() => navigate('/dashboard')}
+                                onBack={() => navigate('/home')}
                             />
                         )}
                     </div>
