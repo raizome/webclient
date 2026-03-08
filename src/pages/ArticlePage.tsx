@@ -1,50 +1,85 @@
-import { useState, useMemo, useCallback, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { Article } from '@src/types/article';
-import { mockArticles } from '@src/data/mockArticles';
-import HomeSidebar from '@src/components/home/HomeSidebar';
-import Topbar from '@src/components/home/Topbar';
-import { useTheme } from '@src/hooks/useTheme';
-import { useIsMobile } from '@src/hooks/use-mobile';
-import { X } from 'lucide-react';
-import ArticleDetail from '@src/components/article/ArticleDetail';
-import ArticleDetailSkeleton from '@src/components/article/ArticleDetailSkeleton';
+import { useParams, useNavigate }   from 'react-router-dom';
+import { Article }                  from '@src/types/article';
+import HomeSidebar                  from '@src/components/home/HomeSidebar';
+import Topbar                       from '@src/components/home/Topbar';
+import { useTheme }                 from '@src/hooks/useTheme';
+import { useIsMobile }              from '@src/hooks/use-mobile';
+import { X }                        from 'lucide-react';
+import ArticleDetail                from '@src/components/article/ArticleDetail';
+import ArticleDetailSkeleton        from '@src/components/article/ArticleDetailSkeleton';
+import getManager                   from '@src/api/getManager';
 import type { NavSection, FilterStatus, SortOption } from '@src/types/article';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 
 export default function ArticlePage() {
-    const { itemId } = useParams<{ itemId: string }>();
-    const navigate = useNavigate();
-    const [article, setArticle] = useState<Article | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
+    const { itemId }                            = useParams<{ itemId: string }>();
+    const navigate                              = useNavigate();
+    const [article, setArticle]                 = useState<Article | null>(null);
+    const [loading, setLoading]                 = useState(true);
+    const [error, setError]                     = useState(false);
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const [activeSection, setActiveSection] = useState<NavSection>('all');
-    const [searchQuery, setSearchQuery] = useState('');
-    const [filterStatus, setFilterStatus] = useState<FilterStatus>('all');
-    const [sortOption, setSortOption] = useState<SortOption>('newest');
-    const { isDark, toggle: toggleTheme } = useTheme();
+    const [mobileMenuOpen, setMobileMenuOpen]   = useState(false);
+    const [activeSection, setActiveSection]     = useState<NavSection>('all');
+    const [searchQuery, setSearchQuery]         = useState('');
+    const [filterStatus, setFilterStatus]       = useState<FilterStatus>('all');
+    const [sortOption, setSortOption]           = useState<SortOption>('newest');
+    const { isDark, toggle: toggleTheme }       = useTheme();
     const isMobile = useIsMobile();
 
     useEffect(() => {
         if (!isMobile) setMobileMenuOpen(false);
     }, [isMobile]);
 
-    // Simulate API fetch
     useEffect(() => {
-        setLoading(true);
-        setError(false);
-        const timer = setTimeout(() => {
-            const found = mockArticles.find(a => a.item_id === Number(itemId));
-            if (found) {
-                setArticle(found);
-            } else {
+        const fetchArticle = async () => {
+            setLoading(true);
+            setError(false);
+
+            try {
+                const resGetManager = await getManager({
+                    consumer_key: "",
+                    access_token: "",
+                });
+
+                const articles = resGetManager?.data?.list;
+                if (!articles) throw new Error("Articles were not fetched");
+
+                const raw = Object.values(articles).find((a: any) => a.item_id === itemId || Number(a.item_id) === Number(itemId));
+                if (!raw) throw new Error("Article not found");
+
+                const a: any = raw;
+                setArticle({
+                    item_id:        Number(a.item_id),
+                    status:         Number(a.status) as 0 | 1 | 2,
+                    favorite:       a.favorite === '1' || a.favorite === true,
+                    given_url:      a.given_url,
+                    given_title:    a.given_title || undefined,
+                    resolved_title: a.resolved_title,
+                    resolved_url:   a.resolved_url,
+                    excerpt:        a.excerpt,
+                    has_video:      Number(a.has_video) as 0 | 1,
+                    has_image:      Number(a.has_image) as 0 | 1,
+                    word_count:     Number(a.word_count),
+                    time_added:     a.time_added,
+                    time_updated:   a.time_updated ?? undefined,
+                    top_image_url:  a.top_image_url ?? undefined,
+                    domain:         { domain_id: 0, name: new URL(a.resolved_url || a.given_url).hostname },
+                    tags:           a.tags ?? [],
+                    author:         a.author ?? undefined,
+                });
+            }
+            catch (err) {
+                console.log(err?.message);
                 setError(true);
             }
-            setLoading(false);
-        }, 800);
-        return () => clearTimeout(timer);
+            finally {
+                setLoading(false);
+            }
+        };
+
+        fetchArticle();
     }, [itemId]);
+
 
     const toggleFavorite = useCallback(() => {
         setArticle(prev => prev ? { ...prev, favorite: !prev.favorite } : prev);
@@ -60,9 +95,13 @@ export default function ArticlePage() {
     }, [navigate]);
 
     const articleCounts = useMemo(() => ({
-        all: mockArticles.filter(a => a.status !== 2).length,
-        favorites: mockArticles.filter(a => a.favorite && a.status !== 2).length,
-        archived: mockArticles.filter(a => a.status === 1).length,
+        // WE cannot fetch all articles for the side bar, just for the single article page
+        // TODO: fix this. The best option is to just not show the total number of archived favorited
+        // or all articles at all. Just show labels. Because, if you want to show the number then
+        // you need to fetch them.
+        all: 0,
+        favorites: 0,
+        archived: 0,
     }), []);
 
     return (
