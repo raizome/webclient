@@ -41,7 +41,7 @@ export default function Home() {
             const formattedArticles = Object.values(articles).map((a: any) => ({
                 item_id:        Number(a.item_id),
                 status:         Number(a.status) as 0 | 1 | 2,
-                favorite:       a.favorite === '1' || a.favorite === true,  // API returns "0"/"1" not "true"/"false"
+                favorite:       a.favorite === '1' || a.favorite === true,
                 given_url:      a.given_url,
                 given_title:    a.given_title || undefined,
                 resolved_title: a.resolved_title,
