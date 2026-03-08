@@ -1,42 +1,77 @@
-import { useState, useMemo, useCallback, useEffect } from 'react';
-import { Article, FilterStatus, SortOption, NavSection } from '@src/types/article';
-import { mockArticles } from '@src/data/mockArticles';
-import HomeSidebar from '@src/components/home/HomeSidebar';
-import Topbar from '@src/components/home/Topbar';
-import ArticleList from '@src/components/home/ArticleList';
-import EmptyState from '@src/components/home/EmptyState';
-import LoadingSkeleton from '@src/components/home/LoadingSkeleton';
-import TagsPage from '@src/components/home/TagsPage';
-import { useTheme } from '@src/hooks/useTheme';
-import { useIsMobile } from '@src/hooks/use-mobile';
-import { cn } from '@src/commons/utils';
-import { X } from 'lucide-react';
-import AddArticleModal from '@src/components/home/AddArticleModal';
-
+import HomeSidebar              from '@src/components/home/HomeSidebar';
+import Topbar                   from '@src/components/home/Topbar';
+import ArticleList              from '@src/components/home/ArticleList';
+import EmptyState               from '@src/components/home/EmptyState';
+import LoadingSkeleton          from '@src/components/home/LoadingSkeleton';
+import TagsPage                 from '@src/components/home/TagsPage';
+import { useTheme }             from '@src/hooks/useTheme';
+import { useIsMobile }          from '@src/hooks/use-mobile';
+import { cn }                   from '@src/commons/utils';
+import { X }                    from 'lucide-react';
+import AddArticleModal          from '@src/components/home/AddArticleModal';
+import getManager               from '@src/api/getManager';
+import { useState, useMemo, useCallback, useEffect }        from 'react';
+import { Article, FilterStatus, SortOption, NavSection }    from '@src/types/article';
 
 export default function Home() {
-    const [articles, setArticles] = useState<Article[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [searchQuery, setSearchQuery] = useState('');
-    const [filterStatus, setFilterStatus] = useState<FilterStatus>('all');
-    const [sortOption, setSortOption] = useState<SortOption>('newest');
+    const [articles, setArticles]           = useState<Article[]>([]);
+    const [loading, setLoading]             = useState(true);
+    const [searchQuery, setSearchQuery]     = useState('');
+    const [filterStatus, setFilterStatus]   = useState<FilterStatus>('all');
+    const [sortOption, setSortOption]       = useState<SortOption>('newest');
     const [activeSection, setActiveSection] = useState<NavSection>('all');
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const [addModalOpen, setAddModalOpen] = useState(false);
-    const { isDark, toggle: toggleTheme } = useTheme();
+    const [addModalOpen, setAddModalOpen]   = useState(false);
+    const { isDark, toggle: toggleTheme }   = useTheme();
     const isMobile = useIsMobile();
 
 
+    const fetchArticles = async () => {
+        try {
+            const resGetManager = await getManager({
+                consumer_key: "",
+                access_token: "",
+            });
 
-    // Simulate API fetch
-    useEffect(() => {
-        const timer = setTimeout(() => {
+            const articles = resGetManager?.data?.list;
 
-            setArticles(mockArticles);
+            if (!articles) throw new Error("Articles were not fetched");
+
+            const formattedArticles = Object.values(articles).map((a: any) => ({
+                item_id:        Number(a.item_id),
+                status:         Number(a.status) as 0 | 1 | 2,
+                favorite:       a.favorite === '1' || a.favorite === true,  // API returns "0"/"1" not "true"/"false"
+                given_url:      a.given_url,
+                given_title:    a.given_title || undefined,
+                resolved_title: a.resolved_title,
+                resolved_url:   a.resolved_url,
+                excerpt:        a.excerpt,
+                has_video:      Number(a.has_video) as 0 | 1,
+                has_image:      Number(a.has_image) as 0 | 1,
+                word_count:     Number(a.word_count),
+                time_added:     a.time_added,
+                time_updated:   a.time_updated ?? undefined,
+                top_image_url:  a.top_image_url ?? undefined,
+                domain:         { domain_id: 0, name: new URL(a.resolved_url || a.given_url).hostname },
+                tags:           a.tags ?? [],
+                author:         a.author ?? undefined,
+            }));
+
+            setArticles(formattedArticles);
+        }
+        catch (err) {
+            // TODO: find out what went wrong
+            console.log(err?.message);
+        }
+        finally {
             setLoading(false);
-        }, 1200);
-        return () => clearTimeout(timer);
+        }
+    };
+
+    // fetch articles from /get endpoint
+    useEffect(() => {
+        fetchArticles();
     }, []);
 
     // Close mobile menu on resize
@@ -204,9 +239,7 @@ export default function Home() {
             <AddArticleModal
                 open={addModalOpen}
                 onOpenChange={setAddModalOpen}
-                onSuccess={() => {
-                    // Future: refetch articles from API
-                }}
+                onSuccess={fetchArticles}
             />
         </div>
     );
