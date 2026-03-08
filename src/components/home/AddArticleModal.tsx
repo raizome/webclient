@@ -1,13 +1,15 @@
-import { useState, useCallback } from 'react';
-import {
-    Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
-} from '@src/components/ui/dialog';
-import { Button } from '@src/components/ui/button';
-import { Input } from '@src/components/ui/input';
-import { Label } from '@src/components/ui/label';
-import { useAddArticle } from '@src/hooks/useAddArticle';
-import { toast } from 'sonner';
-import { Loader2, Link as LinkIcon, Type, Tags } from 'lucide-react';
+import { useState, useCallback }    from 'react';
+import { Button }                   from '@src/components/ui/button';
+import { Input }                    from '@src/components/ui/input';
+import { Label }                    from '@src/components/ui/label';
+import { toast }                    from 'sonner';
+import isValidUrl                   from '@src/commons/isValidUrl';
+import { Loader2, Link as LinkIcon, Type, Tags } 
+                                    from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, 
+DialogTitle, DialogDescription }    from '@src/components/ui/dialog';
+import addManager                   from '@src/api/addManager';
+
 
 interface AddArticleModalProps {
     open: boolean;
@@ -15,23 +17,14 @@ interface AddArticleModalProps {
     onSuccess?: () => void;
 }
 
-function isValidUrl(str: string): boolean {
-    try {
-        const url = new URL(str);
-        return url.protocol === 'http:' || url.protocol === 'https:';
-    } catch {
-        return false;
-    }
-}
-
 export default function AddArticleModal({ open, onOpenChange, onSuccess }: AddArticleModalProps) {
     const [url, setUrl] = useState('');
     const [title, setTitle] = useState('');
     const [tags, setTags] = useState('');
-    const { addArticle, isSubmitting } = useAddArticle();
+    const [submitting, setSubmitting] = useState(false);
 
     const urlValid = url.trim().length > 0 && isValidUrl(url.trim());
-    const canSubmit = urlValid && !isSubmitting;
+    const canSubmit = urlValid && !submitting;
 
     const resetForm = useCallback(() => {
         setUrl('');
@@ -40,32 +33,51 @@ export default function AddArticleModal({ open, onOpenChange, onSuccess }: AddAr
     }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
+        // prevent the default redirection behaviour
         e.preventDefault();
-        if (!canSubmit) return;
+        
+        if (!canSubmit) 
+            return;
 
-        const result = await addArticle({
-            url: url.trim(),
-            title: title.trim() || undefined,
-            tags: tags.trim() || undefined,
-        });
+        setSubmitting(true);
 
-        if (result.success) {
-            toast.success(result.message);
+        try {
+            const resAddManager = await addManager({
+                // TODO: fix access token, and consumer key
+                access_token: "",
+                consumer_key: "",
+                url: url.trim(),
+                title: title.trim() || undefined,
+                tags: tags.trim() || undefined,
+            });
+
+            toast.success("Article added successfully");
             resetForm();
             onOpenChange(false);
             onSuccess?.();
-        } else {
-            toast.error(result.message);
         }
+        catch (err) {
+            // axios throws an error on failure
+
+            // TODO: find out what went wrong
+            toast.error("Something went wrong");
+            console.log(err?.message);
+        }
+
+        setSubmitting(false);
+
     };
 
     return (
-        <Dialog open={open} onOpenChange={v => { if (!isSubmitting) onOpenChange(v); }}>
+        <Dialog open={open} onOpenChange={v => { if (!submitting) onOpenChange(v); }}>
             <DialogContent className="sm:max-w-md gap-0">
                 <DialogHeader className="pb-4">
-                    <DialogTitle className="text-lg font-display font-bold">Add Article</DialogTitle>
+                    <DialogTitle className="text-lg font-display font-bold">
+                        Add Article
+                    </DialogTitle>
+                    
                     <DialogDescription className="text-sm text-muted-foreground">
-                        Save a link to read later.
+                        Save a URL, read it later
                     </DialogDescription>
                 </DialogHeader>
 
@@ -87,7 +99,9 @@ export default function AddArticleModal({ open, onOpenChange, onSuccess }: AddAr
                             className="h-11"
                         />
                         {url.trim().length > 0 && !urlValid && (
-                            <p className="text-xs text-destructive">Please enter a valid URL.</p>
+                            <p className="text-xs text-destructive">
+                                Please enter a valid URL.
+                            </p>
                         )}
                     </div>
 
@@ -130,12 +144,12 @@ export default function AddArticleModal({ open, onOpenChange, onSuccess }: AddAr
                             type="button"
                             variant="ghost"
                             onClick={() => onOpenChange(false)}
-                            disabled={isSubmitting}
+                            disabled={submitting}
                         >
                             Cancel
                         </Button>
                         <Button type="submit" disabled={!canSubmit}>
-                            {isSubmitting ? (
+                            {submitting ? (
                                 <>
                                     <Loader2 className="w-4 h-4 animate-spin" />
                                     Saving…
