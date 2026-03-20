@@ -1,5 +1,8 @@
-## Open pocket web frontend 
+## Open pocket webclient
 
-## Demo
+The web based front end implementation of open pocket. It interacts with backend API's and ensures seamless user experience.
 
-https://drive.google.com/file/d/14P5d42fUqC_WFAQi0PcOqKqIkkfPvpI_/view?usp=drive_link
+## Technologies used
+
+1. React
+2. Tailwind CSS
